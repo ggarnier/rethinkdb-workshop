@@ -13,6 +13,12 @@ brew install rethinkdb
 brew install node
 ```
 
+Or to run RethinkDB inside a Docker container:
+
+```
+docker run --name some-rethink -v "$PWD:/data" -p 8080:8080 -p 28015:28015 -d rethinkdb
+```
+
 After installing RethinkDB and Node.js, go the root directory of the repo and install all dependencies.
 
 ```

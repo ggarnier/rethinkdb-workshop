@@ -2,7 +2,7 @@
 'use strict';
 var config = {
   'rethinkdb': {
-    'host': 'localhost',
+    'host': '192.168.59.103',
     'port': 28015,
     'db': 'rethinkdb_workshop'
   },
