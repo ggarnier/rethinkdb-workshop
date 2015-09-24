@@ -73,22 +73,15 @@ app
 app
   .use('/auth', authRouter)
   .get('/messages', function (req, res) {
-    console.log('HTTP Request for Messages');
-    /*!
-     * Step 2: Getting messages
-     *
-     * Query instructions:
-     * Write a query that gets all messages,
-     * ordered by `created` in descending order (a secondary index)
-     *
-     * Callback instructions:
-     * Return the messages array as a JSON document through `res`:
-     *   res.json(messages);
-     *
-     * Result:
-     * Once you have written this query, you'll be able to see
-     * all previously inserted messages when loading the page
-     */
+    r
+      .table('messages')
+      .orderBy({index: 'created'})
+      .run(r.conn, function(err, cursor) {
+        cursor.toArray(function(err, results) {
+          console.log('Messages read: ' + results);
+          res.json(results);
+        });
+      });
   })
   .use('/config.js', clientConfigParser)
   .get('/', function (req, res) {
