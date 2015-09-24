@@ -122,29 +122,15 @@ io.on('connection', function (socket) {
 
   // Insert new messages
   socket.on('message', function (data) {
-    // Display received message
-    console.log('New message received from client (Not inserted into database):', data);
-    /*!
-     * Step 1 : Inserting messages
-     *
-     * Query instructions:
-     * Insert a document into the `messages` table with
-     * the following attributes: `text`, `email`, `created`
-     *
-     * Fields:
-     * {
-     *   'text': 'Hello world', // A string with the message text from the user
-     *   'email':  'jorge@rethinkdb.com' An email address that exists in the `users` table
-     *   'created': A Unix Timestamp `(new Date()).getTime()`
-     * The data object has a `text` field and an `email` field.
-     *
-     * Callback instructions:
-     * There is no need for a callback.
-     *
-     * Result:
-     * Once you write this query, you'll be able to insert new
-     * messages in the front-end and see them in the database
-     */
+    r.table('messages').insert({
+      'text': data.text,
+      'email': data.email,
+      'created': (new Date()).getTime()
+    })
+    .run(r.conn)
+    .then(function(data) {
+      console.log('New message created: ', data);
+    });
   });
 
 });
