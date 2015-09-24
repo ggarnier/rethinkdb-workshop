@@ -94,24 +94,14 @@ app
 
 io.on('connection', function (socket) {
   // Listen to new message being inserted
-  /*!
-   * Step 3 : listening for messages
-   *
-   * query instructions:
-   * write a query that listens to changes in the
-   * `messages` table
-   * hint: the query will return a cursor, not an array
-   * hint: the objects return by the cursor have a `new_val` and an `old_val` property
-   *
-   * callback instructions:
-   * every time a change is pushed by the database, push that change to
-   * the client by emitting a socket event:
-   *   socket.emit('message', row.new_val);
-   *
-   * result:
-   * once you write this query, you'll be able to see new messages be displayed
-   * as they are being added
-   */
+  r
+    .table('messages')
+    .changes()
+    .run(r.conn, function(err, cursor) {
+      cursor.each(function(err, row) {
+        socket.emit('message', row.new_val);
+      });
+    });
 
   // Insert new messages
   socket.on('message', function (data) {
